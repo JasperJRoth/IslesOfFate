@@ -1,0 +1,4632 @@
+{
+  "actors": [
+    {
+      "_id": "t1lYCMMpr8k4ZKua",
+      "name": "Player",
+      "type": "character",
+      "img": "icons/svg/mystery-man.svg",
+      "data": {
+        "tabs": [
+          {
+            "id": "UbYkQz1qXyrLQhy8",
+            "ikey": "stats_tab",
+            "name": "Stats Tab"
+          },
+          {
+            "id": "wKXQfz9aCp8WNHh5",
+            "ikey": "class_abilities_tab",
+            "name": "Class Abilities Tab"
+          },
+          {
+            "id": "S5TddSV9JlmeD3AS",
+            "ikey": "skills_tab",
+            "name": "Skills Tab"
+          }
+        ],
+        "istemplate": true,
+        "gtemplate": "Player",
+        "sheets": [],
+        "mod": 0,
+        "rollmode": "1d20",
+        "displayName": "HOVER",
+        "tokenbar1": "health",
+        "shieldstat": "armor",
+        "biovisible": true,
+        "visitabs": "5",
+        "_html": "<form class=\"{{cssClass}}\" autocomplete=\"off\" id=\"sheet\">\n    {{!-- Sheet Header --}}\n    <header class=\"sheet-header\">\n        <img class=\"profile-img\" src=\"{{actor.img}}\" title=\"{{actor.name}}\" data-edit=\"img\" width=\"100\" height=\"100\">\n        <div class=\"header-fields\">\n            <h1 class=\"charname\"><input name=\"name\" class=\"entityname\" type=\"text\" value=\"{{actor.name}}\" placeholder=\"Name\"></h1>\n            <div class=\"flexblock-left charsetup\">\n                <div class=\"col-1-2\">\n                    {{#if actor.data.istemplate}}\n                    {{else}}\n                    <div class=\"flexblock-left\">\n\n                        {{#advShow}}\n                        <a class=\"roll-mode boldtext\" title=\"Roll mode\"><i>{{data.data.rollmode}}</i></a>\n                        {{/advShow}}\n\n                        {{#showRoller}}\n                        <a class=\"roll-free\" title=\"Roll mode\"><i class=\"fas fa-dice-d20\"></i></a>\n                        {{/showRoller}}\n\n                        {{#if actor.data.selector}}\n                        <a class=\"mod-selector\" title=\"Select Options\"><i class=\"fas fa-exclamation-circle fa-2x\"></i></a>\n                        {{/if}}\n\n                        {{#rollMod}}\n                        <label class=\"label-mod\">MOD</label>\n                        <input class=\"input-mod\" type=\"text\" name=\"data.mod\" value=\"{{data.data.mod}}\">\n                        {{/rollMod}}\n\n                    </div>\n                    {{/if}}\n                </div>\n\n                <div class=\"rightblock gmsetup\">\n                    {{#if actor.data.istemplate}}\n                    {{else}}\n                    {{#isGM}}\n                    <a class=\"sheet-reload\" title=\"Reload Template\"><i class=\"fas fa-arrow-alt-circle-down fa-2x\"></i></a>\n                    <select class=\"selectsheet\" name=\"data.gtemplate\" data-type=\"String\">\n                    </select>\n                    {{/isGM}}\n                    {{/if}}\n                    {{#isGM}}\n\n\n                    <h3 class=\"rightblock-element\">Template</h3>\n                    <input class=\"check-istemplate\" name=\"data.istemplate\" id=\"check-istemplate\" type=\"checkbox\" {{checked actor.data.istemplate}}=\"\">\n\n\n                    {{/isGM}}\n\n                    {{#if actor.data.istemplate}}\n                    <h3 class=\"rightblock-element-tag\">Rebuild Sheet</h3>\n                    <a class=\"rightblock-element item-refresh\" title=\"Rebuild Sheet\"><i class=\"fas fa-sync\"></i></a>\n                    {{/if}}\n                </div>\n            </div>\n        </div>\n    </header>\n\n    {{!-- Sheet Tab Navigation --}}\n    <div class=\"atabs\">\n        <a class=\"tab-prev\" id=\"tab-prev\"><i class=\"leftarrow\"></i></a>\n        <nav class=\"sheet-tabs tabs\" data-group=\"primary\" id=\"tabs\" tabs=\"3\">\n\n            <a class=\"item tab-button player-tab desc-tab\" data-tab=\"description\" id=\"tab-0\">Bio</a>          \n            <a class=\"item tab-button player-tab\" id=\"tab-1\" data-tab=\"stats_tab\">Stats</a><a class=\"item tab-button player-tab\" id=\"tab-2\" data-tab=\"class_abilities_tab\">Abilities</a><a class=\"item tab-button player-tab\" id=\"tab-3\" data-tab=\"skills_tab\">Skills</a><a style=\"display: none\" id=\"tab-last\"></a>\n            {{#isGM}}\n            {{#if actor.data.istemplate}}\n            <a class=\"item tab-button\" data-tab=\"token\" id=\"tab-token\">Config</a>\n            <a class=\"item tab-button\" data-tab=\"config\" id=\"tab-tabs\">Tabs</a>\n            {{/if}}\n            <a class=\"item tab-button\" data-tab=\"citems\" id=\"tab-citems\">cItems</a>\n            {{/isGM}}\n\n        </nav>\n        <a class=\"tab-next\" id=\"tab-next\"><i class=\"rightarrow\"></i></a>\n    </div>\n\n    {{!-- Sheet Body --}}\n    <section class=\"sheet-body\" id=\"sheet-body\">\n\n        {{!-- Biography Tab --}}\n        <div class=\"tab biography active scrollable\" data-group=\"primary\" data-tab=\"description\">\n            {{editor content=data.data.biography target=\"data.biography\" button=true owner=owner editable=editable}}\n        </div>\n\n        {{#if actor.data.istemplate}}\n        {{!-- SheetTabs Tab --}}\n        <div class=\"tab properties\" data-group=\"primary\" data-tab=\"config\">\n            <ol class=\"properties-list\">\n                {{#each data.data.tabs as |tab id|}}\n                <li class=\"property flexrow\" data-item-id=\"{{id}}\">\n                    <h4 class=\"property-name\">{{tab.name}}</h4>\n                    <div class=\"property-row\">\n                        <a class=\"property-controls item-top\" title=\"Top Item\"><i class=\"fas fa-arrow-alt-circle-up\"></i></a>\n                        <a class=\"property-controls item-bottom\" title=\"Bottom Item\"><i class=\"fas fa-arrow-alt-circle-down\"></i></a>\n                        <a class=\"property-control item-edit\" title=\"Edit Tab\"><i class=\"fas fa-edit\"></i></a>\n                        <a class=\"property-control item-delete\" title=\"Delete Tab\"><i class=\"fas fa-trash\"></i></a>\n                    </div>\n                </li>\n                {{/each}}\n            </ol>\n        </div>\n        {{!-- Config Tab --}}\n        <div class=\"tab token scrollable\" data-group=\"primary\" data-tab=\"token\">\n            <div class=\"flexblock\">\n                <div class=\"col-1-2\">\n                    <div class=\"new-row\">\n                        <div class=\"panelheader\">\n                            <label class=\"label-medlarge\">TOKEN OPTIONS</label>\n                        </div>\n                    </div>\n                    <div class=\"new-row\">\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Bar 1</label>\n                            <input class=\"token-bar1\" type=\"text\" name=\"data.tokenbar1\" value=\"{{data.data.tokenbar1}}\" tkvalue=\"health\">\n                        </div>\n                    </div>\n                    <div class=\"new-row\">\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Shield Stat</label>\n                            <input class=\"token-shieldstat\" type=\"text\" name=\"data.shieldstat\" value=\"{{data.data.shieldstat}}\" tkvalue=\"armor\">\n                        </div>\n                    </div>\n                    <div class=\"new-row\">\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Display Name</label>\n                            <select class=\"token-displayName\" name=\"data.displayName\" data-type=\"String\" tkvalue=\"HOVER\">\n                                {{#select data.data.displayName}}\n                                <option value=\"NONE\">NONE</option>\n                                <option value=\"CONTROL\">CONTROL</option>\n                                <option value=\"OWNER_HOVER\">OWNER HOVER</option>\n                                <option value=\"HOVER\">HOVER</option>\n                                <option value=\"OWNER\">OWNER</option>\n                                <option value=\"ALWAYS\">ALWAYS</option>\n                                {{/select}}\n                            </select>\n                        </div>\n                    </div>\n\n                    <div class=\"new-row\">\n                        <div class=\"panelheader\">\n                            <label class=\"label-medlarge\">TAB OPTIONS</label>\n                        </div>\n\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">BIO Tab Visible</label>\n                            <input class=\"check-biovisible\" name=\"data.biovisible\" id=\"check-biovisible\" type=\"checkbox\" biovisible=\"true\" {{checked=\"\" actor.data.biovisible}}=\"\">\n                        </div>\n\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Max visible Tabs</label>\n                            <select class=\"token-visitabs\" name=\"data.visitabs\" data-type=\"String\" visitabs=\"5\">\n                                {{#select data.data.visitabs}}\n                                <option value=\"2\">2</option>\n                                <option value=\"3\">3</option>\n                                <option value=\"4\">4</option>\n                                <option value=\"5\">5</option>\n                                {{/select}}\n                            </select>\n                        </div>\n                    </div>\n\n                </div>\n                <div class=\"col-1-2\">\n                    <div class=\"new-row\">\n                        <div class=\"panelheader\">\n                            <label class=\"label-medlarge\">SHEET STYLES</label>\n                        </div>\n                    </div>\n                    <div class=\"new-row\">\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Background</label>\n                            <input class=\"gsheet-backg\" type=\"text\" name=\"data.backg\" value=\"{{data.data.backg}}\">\n                        </div>\n                    </div>\n                    <div class=\"new-row\">\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Height</label>\n                            <input class=\"gsheet-setheight\" type=\"text\" name=\"data.setheight\" value=\"{{data.data.setheight}}\">\n                        </div>\n                    </div>\n                    <div class=\"new-row\">\n                        <div class=\"flexblock-left\">\n                            <label class=\"label-medlarge\">Resizable</label>\n                            <input class=\"check-resizable\" name=\"data.resizable\" id=\"check-resizable\" type=\"checkbox\" resizable=\"true\" {{checked=\"\" actor.data.resizable}}=\"\">\n                        </div>\n                    </div>\n\n                </div>\n\n            </div>\n            <div class=\"col-1-1\">\n                <div class=\"new-row\">\n                    <div class=\"panelheader\">\n                        <label class=\"label-medlarge\">ERROR LOG (BETA)</label>\n                    </div>\n                </div>\n                <div class=\"new-row\">\n                    <textarea class=\"texteditor-large input-disabled\" name=\"data.buildlog\">{{data.data.buildlog}}\n                    </textarea>\n                </div>\n            </div>\n        </div>\n        {{/if}}\n\n        {{!-- cItems Tab --}}\n        <div class=\"tab citems scrollable\" data-group=\"primary\" data-tab=\"citems\">\n            <ol class=\"properties-list\" id=\"citems-tab\">\n                {{#each data.data.citems as |citem cid|}}\n                <li class=\"property flexrow\" data-item-id=\"{{cid}}\">\n                    <h4 class=\"property-name\">{{citem.name}}</h4>\n                    <div class=\"property-row\">\n                        <a class=\"property-control citem-edit\" title=\"Edit cItem\"><i class=\"fas fa-edit\"></i></a>\n                        <a class=\"property-control citem-delete\" citemid=\"{{citem.id}}\" cikey=\"{{citem.ciKey}}\" title=\"Delete cItem\"><i class=\"fas fa-trash\"></i></a>\n                    </div>\n                </li>\n                {{/each}}\n            </ol>\n        </div>\n\n\n\n    <div class=\"tab scrollable stats_tab_tab\" id=\"stats_tab_Def\" data-group=\"primary\" data-tab=\"stats_tab\"><div class=\"new-column sbbody\" id=\"stats_tabBody\"><div class=\"new-block\" id=\"stats_tabrow0\"><div class=\"col-3-4 main_stats_panel_container\"><div class=\"new-row main_stats_panel\"><div class=\"flexblock-center main_stats_panel_row\"><h3 class=\" label-free size_label\" title=\"Size\" id=\"size\" attid=\"EIPEAqJt9mPD28Qi\">SIZE</h3><input name=\"data.attributes.size.value\" value=\"{{data.data.attributes.size.value}}\" type=\"text\" class=\"input-min size \" attid=\"EIPEAqJt9mPD28Qi\"><h3 class=\" label-free violence_label\" title=\"Violence\" id=\"violence\" attid=\"8YEnpO2xwb0sPJsF\">VLNC</h3><input name=\"data.attributes.violence.value\" value=\"{{data.data.attributes.violence.value}}\" type=\"text\" class=\"input-min violence \" attid=\"8YEnpO2xwb0sPJsF\"><h3 class=\" label-free mundanity_label\" title=\"Mundanity\" id=\"mundanity\" attid=\"OyT2Gt4Qg3TrDkep\">MUND</h3><input name=\"data.attributes.mundanity.value\" value=\"{{data.data.attributes.mundanity.value}}\" type=\"text\" class=\"input-min mundanity \" attid=\"OyT2Gt4Qg3TrDkep\"><h3 class=\" label-free unhingedness_label\" title=\"Unhingedness\" id=\"unhingedness\" attid=\"ByG90cm8vBA3bW67\">UNHG</h3><input name=\"data.attributes.unhingedness.value\" value=\"{{data.data.attributes.unhingedness.value}}\" type=\"text\" class=\"input-min unhingedness \" attid=\"ByG90cm8vBA3bW67\"></div></div></div><div class=\"col-1-4 class_panel_container\"><div class=\"panelheader\">Class (Drag Here)</div><div class=\"table-row class_row\"><div class=\"flexblock-left class_panel_row\"><table class=\"table-free sbtable class\" name=\"data.attributes.class\" inputgroup=\"\" value=\"{{data.data.attributes.class.value}}\" attid=\"Tjp8CIs95cF5oGQw\"><thead style=\"display: none;\"><tr class=\" \" tablekey=\"class\"><th class=\"label-large tableheader nameheader\">Class</th><th class=\" tableheader cell-empty\"></th></tr></thead><tbody class=\"table \" id=\"Tjp8CIs95cF5oGQw\"></tbody></table></div></div></div></div><div class=\"new-block\" id=\"stats_tabrow1\"><div class=\"col-5-6 combat_panel_container\"><div class=\"new-row combat_panel\"><div class=\"flexblock-center combat_panel_row\"><h3 class=\" label-free health_label\" id=\"health\" attid=\"AFrwlKCpKP6tzMge\">HP</h3><input name=\"data.attributes.health.value\" value=\"{{data.data.attributes.health.value}}\" type=\"text\" class=\"input-ahalf  health  inputGM\" attid=\"AFrwlKCpKP6tzMge\"><input type=\"text\" class=\"input-bhalf input-disabled inputGM health.max\" name=\"data.attributes.health.max\" value=\"{{data.data.attributes.health.max}}\"><h3 class=\" label-free armor_label\" title=\"Armor Class\" id=\"armor\" attid=\"5QVvzE1JqVxiUrll\">AC</h3><input name=\"data.attributes.armor.value\" value=\"{{data.data.attributes.armor.value}}\" type=\"text\" class=\"input-min input-disabled armor \" readonly=\"true\" attid=\"5QVvzE1JqVxiUrll\"><h3 class=\" label-free melee_mod_label boldtext rollable\" title=\"Melee attack modifier\" id=\"melee_mod\" attid=\"YLsWTF2FcpYvxjpn\">Melee</h3><input name=\"data.attributes.melee_mod.value\" value=\"{{data.data.attributes.melee_mod.value}}\" type=\"text\" class=\"input-min input-disabled melee_mod  inputGM\" readonly=\"true\" attid=\"YLsWTF2FcpYvxjpn\"><h3 class=\" label-free ranged_mod_label boldtext rollable\" title=\"Ranged attack modifier\" id=\"ranged_mod\" attid=\"mVj0hHcQwBgKfkmw\">Ranged</h3><input name=\"data.attributes.ranged_mod.value\" value=\"{{data.data.attributes.ranged_mod.value}}\" type=\"text\" class=\"input-min input-disabled ranged_mod  inputGM\" readonly=\"true\" attid=\"mVj0hHcQwBgKfkmw\"><h3 class=\" label-free crit_threshold_label\" title=\"Critical success threshold.\" id=\"crit_threshold\" attid=\"jkLE7MPoPBraoSsR\">Crit Thresh.</h3><input name=\"data.attributes.crit_threshold.value\" value=\"{{data.data.attributes.crit_threshold.value}}\" type=\"text\" class=\"input-min input-disabled crit_threshold \" readonly=\"true\" attid=\"jkLE7MPoPBraoSsR\"></div><div class=\"flexblock-center combat_panel_row\"><h3 class=\" label-free initiative_label\" title=\"Initiative\" id=\"initiative\" attid=\"KvsuPk9XPS46Fy9k\" style=\"display: none;\">Init.</h3><input name=\"data.attributes.initiative.value\" value=\"{{data.data.attributes.initiative.value}}\" type=\"text\" class=\"input-free input-disabled initiative  inputGM\" readonly=\"true\" attid=\"KvsuPk9XPS46Fy9k\" style=\"display: none;\"></div></div></div><div class=\"col-1-6 level_panel_container\"><div class=\"new-row level_panel\"><div class=\"flexblock-center level_panel_row\"><h3 class=\" label-free level_label\" id=\"level\" attid=\"Su5dQsmnL2Obmgcj\">Level</h3><input name=\"data.attributes.level.value\" value=\"{{data.data.attributes.level.value}}\" type=\"text\" class=\"input-min level \" attid=\"Su5dQsmnL2Obmgcj\"></div></div></div></div></div></div><div class=\"tab scrollable class_abilities_tab_tab\" id=\"class_abilities_tab_Def\" data-group=\"primary\" data-tab=\"class_abilities_tab\"><div class=\"new-column sbbody\" id=\"class_abilities_tabBody\"><div class=\"new-block\" id=\"class_abilities_tabrow1\"><div class=\"col-1-1 class_abilities_panel_container\"><div class=\"table-row class_abilities_row\"><div class=\"flexblock-left class_abilities_panel_row\"><table class=\"table-free sbtable class_abilities\" name=\"data.attributes.class_abilities\" inputgroup=\"\" value=\"{{data.data.attributes.class_abilities.value}}\" attid=\"7EvomQDoUmanLupx\"><thead><tr class=\" \" tablekey=\"class_abilities\"><th class=\"label-large tableheader nameheader\">Ability</th><th class=\"input-min tableheader\">Active</th><th class=\"label-free tableheader propheader\" attkey=\"ability_range\">Range</th><th class=\" tableheader cell-empty\"></th></tr></thead><tbody class=\"table \" id=\"7EvomQDoUmanLupx\"></tbody></table></div></div></div></div></div></div><div class=\"tab scrollable skills_tab_tab\" id=\"skills_tab_Def\" data-group=\"primary\" data-tab=\"skills_tab\"><div class=\"new-column sbbody\" id=\"skills_tabBody\"><div class=\"new-block\" id=\"skills_tabrow1\"><div class=\"col-1-1 skill_roll_panel_container\"><div class=\"new-row skill_roll_panel\"><div class=\"flexblock-left skill_roll_panel_row\"><a class=\"sbbutton skill_roll \" attid=\"X88tXQ7SJwqux5Os\"><i class=\"skill_roll_button macrobutton\" macroid=\"xTyy8Hz8sMGRBZ8V\">Roll Selected Skill</i></a></div></div></div></div><div class=\"new-block\" id=\"skills_tabrow2\"><div class=\"col-1-1 skills_panel_container\"><div class=\"table-row skill_table_row\"><div class=\"flexblock-center skills_panel_row\"><table class=\"table-free sbtable skill_table\" name=\"data.attributes.skill_table\" inputgroup=\"\" value=\"{{data.data.attributes.skill_table.value}}\" attid=\"yGGnhbyyNDXVUpNY\"><thead><tr class=\" \" tablekey=\"skill_table\"><th class=\"label-large tableheader nameheader\">Item</th><th class=\"label-free tableheader propheader\" attkey=\"is_selected_skill\">Selected</th><th class=\"label-free tableheader propheader\" attkey=\"skill_multiplier\">Skill Multiplier</th><th class=\"label-free tableheader propheader\" attkey=\"skill_modifier\">Modifier</th><th class=\"label-free tableheader propheader\" attkey=\"skill_training\">Trained</th><th class=\" tableheader cell-empty\"></th></tr></thead><tbody class=\"table \" id=\"yGGnhbyyNDXVUpNY\"></tbody></table></div></div></div></div></div></div></section>\n</form>",
+        "backg": "",
+        "resizable": true,
+        "setheight": "600",
+        "buildlog": "Last rebuilt: 07/29/2022,  SUCCESFULLY REBUILT",
+        "selector": false,
+        "attributes": {
+          "size": {
+            "value": ""
+          },
+          "violence": {
+            "value": ""
+          },
+          "groundedness": {
+            "value": ""
+          },
+          "unhingedness": {
+            "value": ""
+          },
+          "health": {
+            "value": "",
+            "max": ""
+          },
+          "armor": {
+            "value": ""
+          },
+          "melee_mod": {
+            "value": ""
+          },
+          "ranged_mod": {
+            "value": ""
+          },
+          "crit_threshold": {
+            "value": ""
+          },
+          "initiative": {
+            "value": ""
+          },
+          "level": {
+            "value": ""
+          },
+          "mundanity": {
+            "value": ""
+          },
+          "acrobatics": {
+            "value": ""
+          },
+          "bitweaving": {
+            "value": ""
+          },
+          "empathy": {
+            "value": ""
+          },
+          "history": {
+            "value": ""
+          },
+          "inquiry": {
+            "value": ""
+          },
+          "intimidation": {
+            "value": ""
+          },
+          "Investigation": {
+            "value": ""
+          },
+          "medicine": {
+            "value": ""
+          },
+          "nature": {
+            "value": ""
+          },
+          "perception": {
+            "value": ""
+          },
+          "performance": {
+            "value": ""
+          },
+          "persuasion": {
+            "value": ""
+          },
+          "sneaking": {
+            "value": ""
+          },
+          "society": {
+            "value": ""
+          },
+          "squeezing": {
+            "value": ""
+          },
+          "wrestling": {
+            "value": ""
+          },
+          "investigation": {
+            "value": ""
+          }
+        },
+        "citems": [],
+        "rolls": {},
+        "biography": ""
+      },
+      "token": {
+        "name": "Player",
+        "img": "icons/svg/mystery-man.svg",
+        "displayName": 30,
+        "actorLink": false,
+        "width": 1,
+        "height": 1,
+        "scale": 1,
+        "mirrorX": false,
+        "mirrorY": false,
+        "lockRotation": false,
+        "rotation": 0,
+        "alpha": 1,
+        "vision": true,
+        "dimSight": 0,
+        "brightSight": 0,
+        "sightAngle": 0,
+        "light": {
+          "alpha": 0.5,
+          "angle": 0,
+          "bright": 0,
+          "coloration": 1,
+          "dim": 0,
+          "gradual": true,
+          "luminosity": 0.5,
+          "saturation": 0,
+          "contrast": 0,
+          "shadows": 0,
+          "animation": {
+            "speed": 5,
+            "intensity": 5,
+            "reverse": false
+          },
+          "darkness": {
+            "min": 0,
+            "max": 1
+          }
+        },
+        "disposition": 0,
+        "displayBars": 30,
+        "bar1": {
+          "attribute": null
+        },
+        "bar2": {
+          "attribute": null
+        },
+        "flags": {},
+        "randomImg": false
+      },
+      "items": [],
+      "effects": [],
+      "folder": "nDtCWhOr4TS6IYe7",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {
+        "sandbox": {}
+      }
+    }
+  ],
+  "items": [
+    {
+      "_id": "kkK7PQfTRvY6sf3S",
+      "name": "Pebble Toss",
+      "type": "cItem",
+      "img": "systems/sandbox/docs/icons/sh_citem_icon.png",
+      "data": {
+        "ciKey": "kkK7PQfTRvY6sf3S",
+        "isUnique": false,
+        "uniqueGID": "",
+        "usetype": "CON",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": "0",
+        "icon": "STAR",
+        "rechargable": false,
+        "roll": "roll(Attack;1;20;false)    $<1; ?[Attack]>  $<2; @{crit_threshold} - 1>    $1 + @{ranged_mod}    &&$1; 0:,$2:Crit!&& &&1;0:Deals 1 damage&&",
+        "rollid": "pebble_toss",
+        "rollname": "Pebble Toss",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [],
+        "groups": [
+          {
+            "id": "qUFcu2oIhiTGya1E",
+            "name": "Class Abilities",
+            "ikey": "class_abilities"
+          }
+        ],
+        "attributes": {
+          "name": "Pebble Toss",
+          "ability_range": {
+            "value": "5",
+            "ishidden": false
+          }
+        },
+        "description": ""
+      },
+      "effects": [],
+      "folder": "27Cbc4UaOwmxJf3B",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "uyS6oG9AXqD3Kc88",
+      "name": "Punch",
+      "type": "cItem",
+      "img": "DND_Assets/Cards/punchIcon.png",
+      "data": {
+        "ciKey": "uyS6oG9AXqD3Kc88",
+        "isUnique": false,
+        "uniqueGID": "",
+        "usetype": "CON",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": "0",
+        "icon": "STAR",
+        "rechargable": false,
+        "roll": "roll(Attack;1;20;false)  roll(Damage;1;2;false)    $<1; ?[Attack]>  $<2; @{crit_threshold} - 1>    $1 + @{melee_mod}    &&$1; 0:,$2:Crit!&& &&1;0:Deals ?[Damage] damage&&",
+        "rollid": "punch",
+        "rollname": "Punch",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [],
+        "groups": [
+          {
+            "id": "qUFcu2oIhiTGya1E",
+            "name": "Class Abilities",
+            "ikey": "class_abilities"
+          }
+        ],
+        "attributes": {
+          "name": "Punch",
+          "ability_range": {
+            "value": "1",
+            "ishidden": false
+          }
+        },
+        "description": "<h3>Keywords</h3>\n<p><a href=\"https://docs.google.com/document/d/1kciOzgQQEawS199cFsfp7QekN_mtvF-10JAeRiFunhk/edit#heading=h.54y4cd967ot5\" target=\"_blank\" rel=\"noopener\">Rook</a></p>\n<h3>Range</h3>\n<p>1</p>\n<h3>Description</h3>\n<p>Deals 1d2 damage</p>\n<p>&nbsp;</p>\n<p><em>\"Violence is not the answer\"</em></p>\n<p><em>\"I agree, it's the question. The answer is yes.\"<br /></em></p>"
+      },
+      "effects": [],
+      "folder": "27Cbc4UaOwmxJf3B",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "nvDEwPtqAhHSdtaD",
+      "name": "Dance With Death",
+      "type": "cItem",
+      "img": "systems/sandbox/docs/icons/sh_citem_icon.png",
+      "data": {
+        "ciKey": "nvDEwPtqAhHSdtaD",
+        "isUnique": false,
+        "uniqueGID": "",
+        "usetype": "CON",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": "0",
+        "icon": "STAR",
+        "rechargable": false,
+        "roll": "$<1; @{crit_threshold}> $<2; 12> $<3; $2-1> roll(First Dance;1;20;false) roll(Second Dance;1;20;false) roll(Third Dance;1;20;false) $<5; %[?[First Dance], -1:?[First Dance], @{crit_threshold}:20]> $<6; %[?[Second Dance], -1:?[Second Dance], @{crit_threshold}:20]> $<7; %[?[Third Dance], -1:?[Third Dance], @{crit_threshold}:20]> countH($5, $6, $7; $3) &&1; 0:Successes&& &&countH($5, $6, $7; $1); 0:, 1:with countH($5, $6, $7; $1) crit successes&& &&countL($5, $6, $7; $2); -1:and countL($5, $6, $7; $2) Failures&& &&countL($5, $6, $7; 2); 0:, 1:with countL($5, $6, $7; 2) crit failures&&",
+        "rollid": "dance_with_death",
+        "rollname": "Dance With Death",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [],
+        "groups": [
+          {
+            "id": "qUFcu2oIhiTGya1E",
+            "name": "Class Abilities",
+            "ikey": "class_abilities"
+          }
+        ],
+        "attributes": {
+          "ability_range": {
+            "value": "1"
+          }
+        },
+        "description": ""
+      },
+      "effects": [],
+      "folder": "TmxUE4P0aWjnCpFd",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "AzjIK2VtRAsnopDT",
+      "name": "Jester",
+      "type": "cItem",
+      "img": "DND_Assets/objectsAndTextures/FA_Mapmaking_Pack/Decor/Musical_Instruments/Lute_Wood_Light_A1_1x1.png",
+      "data": {
+        "ciKey": "AzjIK2VtRAsnopDT",
+        "isUnique": true,
+        "uniqueGID": "",
+        "usetype": "PAS",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": "1",
+        "icon": "BOOK",
+        "rechargable": false,
+        "roll": "",
+        "rollid": "",
+        "rollname": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "DND_Assets/objectsAndTextures/FA_Mapmaking_Pack/Decor/Musical_Instruments/Lute_Wood_Light_A1_1x1.png",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [
+          {
+            "name": "Class HP",
+            "index": 0,
+            "type": "ADD",
+            "attribute": "health.max",
+            "selectnum": "",
+            "listmod": "INCLUDE",
+            "items": [],
+            "value": "@{level} * #{class_hp}"
+          }
+        ],
+        "groups": [
+          {
+            "id": "f93vdA0fb2zvJGyJ",
+            "name": "Class Group",
+            "ikey": "class"
+          }
+        ],
+        "attributes": {
+          "name": "Jester",
+          "class_hp": {
+            "value": "2",
+            "ishidden": false
+          }
+        },
+        "description": ""
+      },
+      "effects": [],
+      "folder": "TmxUE4P0aWjnCpFd",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "OdpIcSdUb7Cq9QNw",
+      "name": "Acrobatics",
+      "type": "cItem",
+      "img": "systems/sandbox/docs/icons/sh_citem_icon.png",
+      "data": {
+        "ciKey": "OdpIcSdUb7Cq9QNw",
+        "isUnique": false,
+        "uniqueGID": "",
+        "usetype": "PAS",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": 1,
+        "icon": "BOOK",
+        "rechargable": false,
+        "roll": "",
+        "rollid": "",
+        "rollname": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [],
+        "groups": [
+          {
+            "id": "mdV6YuQTJsnysMpN",
+            "name": "Skill",
+            "ikey": "skill_group"
+          }
+        ],
+        "attributes": {
+          "name": "Acrobatics",
+          "skill_training": {
+            "value": "Untrained",
+            "ishidden": false
+          },
+          "skill_modifier": {
+            "value": 0,
+            "ishidden": false
+          },
+          "skill_multiplier": {
+            "value": "2",
+            "ishidden": false
+          },
+          "is_selected_skill": {
+            "value": "",
+            "ishidden": false
+          }
+        },
+        "description": ""
+      },
+      "effects": [],
+      "folder": "ldVpfP3cjxiqTCl2",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "S1Z8slRzoIQQu31t",
+      "name": "Performance",
+      "type": "cItem",
+      "img": "systems/sandbox/docs/icons/sh_citem_icon.png",
+      "data": {
+        "ciKey": "S1Z8slRzoIQQu31t",
+        "isUnique": false,
+        "uniqueGID": "",
+        "usetype": "PAS",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": 1,
+        "icon": "BOOK",
+        "rechargable": false,
+        "roll": "",
+        "rollid": "",
+        "rollname": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [],
+        "groups": [
+          {
+            "id": "mdV6YuQTJsnysMpN",
+            "name": "Skill",
+            "ikey": "skill_group"
+          }
+        ],
+        "attributes": {
+          "skill_multiplier": {
+            "value": "2",
+            "ishidden": false
+          },
+          "skill_modifier": {
+            "value": "0",
+            "ishidden": false
+          },
+          "skill_training": {
+            "value": "Untrained",
+            "ishidden": false
+          },
+          "name": "Performance",
+          "": {
+            "value": ""
+          },
+          "skill_roll": {
+            "value": ""
+          },
+          "is_selected_skill": {
+            "value": "",
+            "ishidden": false
+          }
+        },
+        "description": ""
+      },
+      "effects": [],
+      "folder": "ldVpfP3cjxiqTCl2",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "ZD1qEUSkbwz2yOU2",
+      "name": "Pottery",
+      "type": "cItem",
+      "img": "systems/sandbox/docs/icons/sh_citem_icon.png",
+      "data": {
+        "ciKey": "ZD1qEUSkbwz2yOU2",
+        "isUnique": false,
+        "uniqueGID": "",
+        "usetype": "PAS",
+        "selfdestruct": false,
+        "effectpath": "",
+        "ispermanent": false,
+        "maxuses": 1,
+        "icon": "BOOK",
+        "rechargable": false,
+        "roll": "",
+        "rollid": "",
+        "rollname": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "tokeniconpath": "",
+        "istokenicon": false,
+        "tokenvisible": false,
+        "mods": [],
+        "groups": [
+          {
+            "id": "mdV6YuQTJsnysMpN",
+            "name": "Skill",
+            "ikey": "skill_group"
+          }
+        ],
+        "attributes": {
+          "name": "Pottery",
+          "skill_training": {
+            "value": "Untrained",
+            "ishidden": false
+          },
+          "skill_modifier": {
+            "value": 0,
+            "ishidden": false
+          },
+          "skill_multiplier": {
+            "value": "5",
+            "ishidden": false
+          },
+          "is_selected_skill": {
+            "value": "",
+            "ishidden": false
+          }
+        },
+        "description": ""
+      },
+      "effects": [],
+      "folder": "ldVpfP3cjxiqTCl2",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "mdV6YuQTJsnysMpN",
+      "name": "Skill",
+      "type": "group",
+      "img": "systems/sandbox/docs/icons/sh_group_icon.png",
+      "data": {
+        "groupKey": "skill_group",
+        "isUnique": false,
+        "properties": [
+          {
+            "id": "teQA2tZWAIKAYPQu",
+            "name": "Selected",
+            "ikey": "is_selected_skill",
+            "isconstant": false
+          },
+          {
+            "id": "ADosGcru6omPR2SK",
+            "name": "Skill Multiplier",
+            "ikey": "skill_multiplier",
+            "isconstant": true
+          },
+          {
+            "id": "Pc9JhS6ml5JpR33m",
+            "name": "Modifier",
+            "ikey": "skill_modifier",
+            "isconstant": true
+          },
+          {
+            "id": "JyLRKIHQNnhZctKx",
+            "name": "Skill Training",
+            "ikey": "skill_training",
+            "isconstant": false
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "jsc5tX5Yjzk4vdNL",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "qUFcu2oIhiTGya1E",
+      "name": "Class Abilities",
+      "type": "group",
+      "img": "systems/sandbox/docs/icons/sh_group_icon.png",
+      "data": {
+        "groupKey": "class_abilities",
+        "isUnique": false,
+        "properties": [
+          {
+            "id": "8kV9HaaCW0Onhzj9",
+            "name": "Range",
+            "ikey": "ability_range",
+            "isconstant": true
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "KT9A2bpEXj9dsZmm",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "f93vdA0fb2zvJGyJ",
+      "name": "Class Group",
+      "type": "group",
+      "img": "systems/sandbox/docs/icons/sh_group_icon.png",
+      "data": {
+        "groupKey": "class",
+        "isUnique": true,
+        "properties": [
+          {
+            "id": "e9Re7PTlVvnVFSCP",
+            "name": "Class HP",
+            "ikey": "class_hp",
+            "isconstant": true
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "KT9A2bpEXj9dsZmm",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "DxrFKOKIPTf7JMuM",
+      "name": "Dance With Death",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "dance_with_death_button",
+        "datatype": "button",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "FXIFY3VZSoOZ5mwA",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "Tjp8CIs95cF5oGQw",
+      "name": "Class",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "class",
+        "datatype": "table",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Drag your class here",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": false,
+        "namecolumn": "Class",
+        "hasunits": false,
+        "hasuses": false,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "ONLY_NAMES",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {
+          "id": "f93vdA0fb2zvJGyJ",
+          "name": "Class Group",
+          "ikey": "class"
+        },
+        "totalize": false,
+        "arrows": false,
+        "tag": "",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "90LMbsC20BnKRLJj",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "e9Re7PTlVvnVFSCP",
+      "name": "Class HP",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "class_hp",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "2",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "Class hit points",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Class HP",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "90LMbsC20BnKRLJj",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "CCX1QFTdqgpOhoyl",
+      "name": "Class panel",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "class_panel",
+        "title": "Class (Drag Here)",
+        "isLocked": false,
+        "width": "1/4",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "1",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "center",
+        "contentalign": "left",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "Tjp8CIs95cF5oGQw",
+            "name": "Class",
+            "ikey": "class"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "90LMbsC20BnKRLJj",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "7EvomQDoUmanLupx",
+      "name": "Class Abilities",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "class_abilities",
+        "datatype": "table",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Ability",
+        "hasunits": false,
+        "hasuses": false,
+        "hasactivation": true,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "DEFAULT",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {
+          "name": "Class Abilities",
+          "id": "qUFcu2oIhiTGya1E",
+          "ikey": "class_abilities"
+        },
+        "totalize": false,
+        "arrows": false,
+        "tag": "",
+        "macroid": "",
+        "attributes": {
+          "name": "Class Abilities"
+        }
+      },
+      "effects": [],
+      "folder": "Nd6uuzToWWvYausu",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "GYJY60ui8OcqjRO9",
+      "name": "Class Abilities Panel",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "class_abilities_panel",
+        "title": "",
+        "isLocked": false,
+        "width": "1",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "1",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "left",
+        "contentalign": "left",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "7EvomQDoUmanLupx",
+            "name": "Class Abilities",
+            "ikey": "class_abilities"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "Nd6uuzToWWvYausu",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "8kV9HaaCW0Onhzj9",
+      "name": "Range",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "ability_range",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "1",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Range",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "Nd6uuzToWWvYausu",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "5QVvzE1JqVxiUrll",
+      "name": "Armor",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "armor",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "10",
+        "auto": "10 + %[@{mundanity}, 0:0, 1:@{mundanity}] - %[@{violence}, 0:0, 1:@{violence}] + %[@{size}, -1:-@{size} * 2, 0:0, 1:-@{size}]",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Armor Class",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "AC",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "ODf4f41Av3TNMJ5v",
+      "name": "Combat",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "combat_panel",
+        "title": "",
+        "isLocked": false,
+        "width": "5/6",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "5",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "left",
+        "contentalign": "center",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "AFrwlKCpKP6tzMge",
+            "name": "Health",
+            "ikey": "health"
+          },
+          {
+            "id": "5QVvzE1JqVxiUrll",
+            "name": "Armor",
+            "ikey": "armor"
+          },
+          {
+            "id": "YLsWTF2FcpYvxjpn",
+            "name": "Melee Modifier",
+            "ikey": "melee_mod"
+          },
+          {
+            "id": "mVj0hHcQwBgKfkmw",
+            "name": "Ranged Modifier",
+            "ikey": "ranged_mod"
+          },
+          {
+            "id": "jkLE7MPoPBraoSsR",
+            "name": "Crit Threshold",
+            "ikey": "crit_threshold"
+          },
+          {
+            "id": "KvsuPk9XPS46Fy9k",
+            "name": "Initiative",
+            "ikey": "initiative"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 200000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "jkLE7MPoPBraoSsR",
+      "name": "Crit Threshold",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "crit_threshold",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "20",
+        "auto": "%[@{unhingedness}, 0:20, 1:20 - @{unhingedness}]",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Critical success threshold.",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Crit Thresh.",
+        "macroid": "",
+        "attributes": {
+          "name": "Crit Threshold"
+        }
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 300000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "AFrwlKCpKP6tzMge",
+      "name": "Health",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "health",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "5 + %[@{mundanity}, 0:0, 1:@{mundanity}] + %[@{size}, 0:0, 1:@{size}]",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "HP",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 400000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "KvsuPk9XPS46Fy9k",
+      "name": "Initiative",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "initiative",
+        "datatype": "simpletext",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "1d20+@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "Initiative",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": true,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Init.",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "YLsWTF2FcpYvxjpn",
+      "name": "Melee Modifier",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "melee_mod",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "%[@{violence}, 0:0, 1:@{violence}*3] + %[@{unhingedness}, -1:-@{unhingedness}, 0:0, 1:-@{unhingedness}] + %[@{size}, 0:0, 1:@{size} * 2]",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "Melee attack modifier",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Melee Attack",
+        "rollexp": "$<1;1d20> $1 + @{melee_mod} &&$1; 0:, @{crit_threshold}:CRIT!&&",
+        "rollid": "melee",
+        "hasdialog": false,
+        "dialogName": "melee_roll_panel",
+        "dialogID": "DJSNIYq64IbAhyIf",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Melee",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 500000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "mVj0hHcQwBgKfkmw",
+      "name": "Ranged Modifier",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "ranged_mod",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "%[@{violence}, 0:0, 1:@{violence}*2] - %[@{unhingedness}, -1:@{unhingedness} * 2, 0:0, 1:@{unhingedness}]",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "Ranged attack modifier",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Ranged Attack",
+        "rollexp": "$<1;1d20> $1 + @{ranged_mod} && $1; 0:, @{crit_threshold}:CRIT! &&",
+        "rollid": "ranged",
+        "hasdialog": false,
+        "dialogName": "ranged_roll_panel",
+        "dialogID": "Si5Wee0Lmk01tzyH",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Ranged",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "GAFcIarA7dSsZTAS",
+      "sort": 600000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "Su5dQsmnL2Obmgcj",
+      "name": "Level",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "level",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Level",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "lpJamrpH58EMpBmY",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "eR31rzZslbIQoNPM",
+      "name": "Level Panel",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "level_panel",
+        "title": "",
+        "isLocked": false,
+        "width": "1/6",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "1",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "left",
+        "contentalign": "center",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "Su5dQsmnL2Obmgcj",
+            "name": "Level",
+            "ikey": "level"
+          }
+        ],
+        "attributes": {
+          "name": "Level Panel"
+        }
+      },
+      "effects": [],
+      "folder": "lpJamrpH58EMpBmY",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "Wc4z3QNaDFGzZUsm",
+      "name": "Main Stats",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "main_stats_panel",
+        "title": "",
+        "isLocked": false,
+        "width": "3/4",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "4",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "left",
+        "contentalign": "center",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "EIPEAqJt9mPD28Qi",
+            "name": "Size",
+            "ikey": "size"
+          },
+          {
+            "id": "8YEnpO2xwb0sPJsF",
+            "name": "Violence",
+            "ikey": "violence"
+          },
+          {
+            "id": "OyT2Gt4Qg3TrDkep",
+            "name": "Mundanity",
+            "ikey": "mundanity"
+          },
+          {
+            "id": "ByG90cm8vBA3bW67",
+            "name": "Unhingedness",
+            "ikey": "unhingedness"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "kQTn19ErFOrk9jGA",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "OyT2Gt4Qg3TrDkep",
+      "name": "Mundanity",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "mundanity",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Mundanity",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Groundedness Check",
+        "rollexp": "1d20 + @{groundedness}",
+        "rollid": "groundedness",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "MUND",
+        "macroid": "",
+        "attributes": {
+          "name": "Mundanity"
+        }
+      },
+      "effects": [],
+      "folder": "kQTn19ErFOrk9jGA",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "EIPEAqJt9mPD28Qi",
+      "name": "Size",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "size",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Size",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Size Check",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "SIZE",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "kQTn19ErFOrk9jGA",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "ByG90cm8vBA3bW67",
+      "name": "Unhingedness",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "unhingedness",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Unhingedness",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Bewilderment Check",
+        "rollexp": "1d20 + @{bewilderment}",
+        "rollid": "bewilderment",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "UNHG",
+        "macroid": "",
+        "attributes": {
+          "name": "Unhingedness"
+        }
+      },
+      "effects": [],
+      "folder": "kQTn19ErFOrk9jGA",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "8YEnpO2xwb0sPJsF",
+      "name": "Violence",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "violence",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "Violence",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Initiative Roll",
+        "rollexp": "1d20 + @{violence}",
+        "rollid": "initiative",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "VLNC",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "kQTn19ErFOrk9jGA",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "Pc9JhS6ml5JpR33m",
+      "name": "Modifier",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "skill_modifier",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "#{skill_multiplier} *   if[#{skill_training}:Trained, 1,  ELSE if[#{skill_training}:Expertise, 2, ELSE if[#{skill_training}:Mastery, 3, 0]]]",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "#{roll} Roll",
+        "rollexp": "1d20 + #{skill_modifier}",
+        "rollid": "skill_modifier_roll",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Modifier",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 100000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "teQA2tZWAIKAYPQu",
+      "name": "Selected",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "is_selected_skill",
+        "datatype": "checkbox",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "selected_skill",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Selected",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "ADosGcru6omPR2SK",
+      "name": "Skill Multiplier",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "skill_multiplier",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": false,
+        "haslabel": true,
+        "tooltip": "Skill Multiplier",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Skill Multiplier",
+        "macroid": "",
+        "attributes": {
+          "name": "Skill Multiplier"
+        }
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 300000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "X88tXQ7SJwqux5Os",
+      "name": "Skill Roll",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "skill_roll",
+        "datatype": "button",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Roll Selected Skill",
+        "macroid": "xTyy8Hz8sMGRBZ8V"
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "CWYbcbKf6ZGUesPd",
+      "name": "Skill Roll Panel",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "skill_roll_panel",
+        "title": "",
+        "isLocked": false,
+        "width": "1",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "1",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "left",
+        "contentalign": "left",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "X88tXQ7SJwqux5Os",
+            "name": "Skill Roll",
+            "ikey": "skill_roll"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "yGGnhbyyNDXVUpNY",
+      "name": "Skill Table",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "skill_table",
+        "datatype": "table",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": false,
+        "hasuses": false,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "DEFAULT",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {
+          "id": "mdV6YuQTJsnysMpN",
+          "name": "Skill",
+          "ikey": "skill_group"
+        },
+        "totalize": false,
+        "arrows": false,
+        "tag": "",
+        "macroid": "",
+        "attributes": {
+          "name": "Skill Table"
+        }
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "JyLRKIHQNnhZctKx",
+      "name": "Skill Training",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "skill_training",
+        "datatype": "list",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "Untrained",
+        "auto": "",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "Untrained,Trained,Expertise,Mastery",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "N",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": false,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "",
+        "rollexp": "",
+        "rollid": "",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Trained",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "r1FbpuMlFedU46Wz",
+      "name": "Skills Panel",
+      "type": "panel",
+      "img": "systems/sandbox/docs/icons/sh_panel_icon.png",
+      "data": {
+        "panelKey": "skills_panel",
+        "title": "",
+        "isLocked": false,
+        "width": "1",
+        "wtypes": {
+          "full": {
+            "value": "1"
+          },
+          "five-sixths": {
+            "value": "5/6"
+          },
+          "three-fourths": {
+            "value": "3/4"
+          },
+          "two-thirds": {
+            "value": "2/3"
+          },
+          "five-eigths": {
+            "value": "5/8"
+          },
+          "half": {
+            "value": "1/2"
+          },
+          "three-eigths": {
+            "value": "3/8"
+          },
+          "third": {
+            "value": "1/3"
+          },
+          "thirth": {
+            "value": "3/10"
+          },
+          "fourth": {
+            "value": "1/4"
+          },
+          "sixth": {
+            "value": "1/6"
+          },
+          "eigth": {
+            "value": "1/8"
+          },
+          "sixteenth": {
+            "value": "1/16"
+          }
+        },
+        "columns": "1",
+        "ctypes": {
+          "c1": {
+            "value": 1
+          },
+          "c2": {
+            "value": 2
+          },
+          "c3": {
+            "value": 3
+          },
+          "c4": {
+            "value": 4
+          },
+          "c5": {
+            "value": 5
+          },
+          "c6": {
+            "value": 6
+          },
+          "c7": {
+            "value": 7
+          },
+          "c8": {
+            "value": 8
+          }
+        },
+        "alignment": "left",
+        "contentalign": "center",
+        "atypes": {
+          "left": "",
+          "center": "",
+          "right": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "backg": "D",
+        "isimg": false,
+        "imgsrc": "",
+        "fontgroup": "",
+        "inputgroup": "",
+        "headergroup": "",
+        "properties": [
+          {
+            "id": "yGGnhbyyNDXVUpNY",
+            "name": "Skill Table",
+            "ikey": "skill_table"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "Owv033RECtq7ETan",
+      "sort": 400000,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "XzUI0xZyCcJiP9Sg",
+      "name": "Acrobatics",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "acrobatics",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "@{mundanity}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Acrobatics Check",
+        "rollexp": "1d20 + @{acrobatics}",
+        "rollid": "acrobatics",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Acrobatics",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "Qfwjxujo0YRKpp3X",
+      "name": "Bitweaving",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "bitweaving",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{mundanity}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Bitweaving Check",
+        "rollexp": "1d20 + @{bitweaving}",
+        "rollid": "bitweaving",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Bitweaving",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "kB3HSraFLDk4qcUk",
+      "name": "Empathy",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "empathy",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Empathy Check",
+        "rollexp": "1d20 + @{empathy}",
+        "rollid": "empathize",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Empathy",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "pXMKeyAyLhQLvCRI",
+      "name": "History",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "history",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{mundanity}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "History Check",
+        "rollexp": "1d20 + @{history}",
+        "rollid": "history",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "History",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "J7A2xIBEKUcdPKsv",
+      "name": "Inquiry",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "inquiry",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Inquiry Check",
+        "rollexp": "1d20 + @{inquiry}",
+        "rollid": "inquire",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Inquiry",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "iJypqo1NBrsJpqUU",
+      "name": "Intimidation",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "intimidation",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Intimidation Check",
+        "rollexp": "1d20 + @{intimidation}",
+        "rollid": "intimidate",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Intimidation",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "tHtfKdpCGq2GLh0T",
+      "name": "Investigation",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "investigation",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{unhingedness}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Investigation Check",
+        "rollexp": "1d20 + @{investigation}",
+        "rollid": "investigate",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Investigation",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "JpQb92bJgFpyMms1",
+      "name": "Medicine",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "medicine",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Medicine Check",
+        "rollexp": "1d20 + @{medicine}",
+        "rollid": "medicate",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Medicine",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "s9apbDhNGuNpxcAh",
+      "name": "Nature",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "nature",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "@{mundanity}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Nature Check",
+        "rollexp": "1d20 + @{nature}",
+        "rollid": "nature",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Nature",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "NrzyBRQYgnFnNiNm",
+      "name": "Perception",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "perception",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{unhingedness}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Perception Check",
+        "rollexp": "1d20 + @{perception}",
+        "rollid": "percieve",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Perception",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "qMazbuIMtBl0wEB9",
+      "name": "Performance",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "performance",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "@{unhingedness}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Performance Check",
+        "rollexp": "1d20 + @{performance}",
+        "rollid": "perform",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Performance",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "dEjXYo9tMlEGpMcR",
+      "name": "Persuasion",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "persuasion",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Persuasion Check",
+        "rollexp": "1d20 + @{persuasion}",
+        "rollid": "persuade",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Persuasion",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "YKMoOaQmo8HDTcv3",
+      "name": "Sneaking",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "sneaking",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "@{mundanity}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Sneaking Check",
+        "rollexp": "1d20 + @{sneaking}",
+        "rollid": "sneak",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Sneaking",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "7WWyuGG0akVaibvq",
+      "name": "Society",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "society",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{violence}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Society Check",
+        "rollexp": "1d20 + @{society}",
+        "rollid": "socialize",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Society",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "zo1WTNtnIE4KSOeN",
+      "name": "Squeezing",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "squeezing",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "-@{size}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Squeeze Check",
+        "rollexp": "1d20 - @{squeezing}",
+        "rollid": "squeeze",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Squeezing",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "O6G2KF8GMdZ3hC4V",
+      "name": "Wrestling",
+      "type": "property",
+      "img": "systems/sandbox/docs/icons/sh_prop_icon.png",
+      "data": {
+        "attKey": "wrestling",
+        "datatype": "simplenumeric",
+        "dtypes": {
+          "simpletext": "",
+          "simplenumeric": "",
+          "checkbox": "",
+          "radio": "",
+          "textarea": "",
+          "list": "",
+          "label": "",
+          "badge": "",
+          "table": "",
+          "button": ""
+        },
+        "defvalue": "",
+        "auto": "@{size}",
+        "automax": "",
+        "maxvisible": true,
+        "maxtop": true,
+        "listoptions": "",
+        "checkgroup": "",
+        "customcheck": false,
+        "onPath": "",
+        "offPath": "",
+        "editable": true,
+        "haslabel": true,
+        "tooltip": "",
+        "labelformat": "B",
+        "fontgroup": "",
+        "inputgroup": "",
+        "labelsize": "F",
+        "inputsize": "F",
+        "hasroll": true,
+        "ishidden": false,
+        "hasheader": true,
+        "namecolumn": "Item",
+        "hasunits": true,
+        "hasuses": true,
+        "hasactivation": false,
+        "hastotals": false,
+        "transferrable": false,
+        "onlynames": "",
+        "isfreetable": false,
+        "tableitems": [],
+        "tableheight": "F",
+        "rollname": "Wrestling Check",
+        "rollexp": "1d20 + @{wrestling}",
+        "rollid": "wrestle",
+        "hasdialog": false,
+        "dialogName": "",
+        "dialogID": "",
+        "radiotype": "",
+        "group": {},
+        "totalize": false,
+        "arrows": false,
+        "tag": "Wrestling",
+        "macroid": ""
+      },
+      "effects": [],
+      "folder": "dYE3UZhTzddeiaIZ",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "wKXQfz9aCp8WNHh5",
+      "name": "Class Abilities Tab",
+      "type": "sheettab",
+      "img": "systems/sandbox/docs/icons/sh_tab_icon.png",
+      "data": {
+        "tabKey": "class_abilities_tab",
+        "title": "Abilities",
+        "controlby": "public",
+        "bytypes": {
+          "public": "",
+          "gamemaster": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "panels": [
+          {
+            "id": "GYJY60ui8OcqjRO9",
+            "name": "Class Abilities Panel",
+            "ikey": "class_abilities_panel"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "YdWuY9yIm85nKpUn",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "S5TddSV9JlmeD3AS",
+      "name": "Skills Tab",
+      "type": "sheettab",
+      "img": "systems/sandbox/docs/icons/sh_tab_icon.png",
+      "data": {
+        "tabKey": "skills_tab",
+        "title": "Skills",
+        "controlby": "public",
+        "bytypes": {
+          "public": "",
+          "gamemaster": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "panels": [
+          {
+            "id": "CWYbcbKf6ZGUesPd",
+            "name": "Skill Roll Panel",
+            "ikey": "skill_roll_panel"
+          },
+          {
+            "id": "r1FbpuMlFedU46Wz",
+            "name": "Skills Panel",
+            "ikey": "skills_panel"
+          }
+        ]
+      },
+      "effects": [],
+      "folder": "YdWuY9yIm85nKpUn",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    },
+    {
+      "_id": "UbYkQz1qXyrLQhy8",
+      "name": "Stats Tab",
+      "type": "sheettab",
+      "img": "systems/sandbox/docs/icons/sh_tab_icon.png",
+      "data": {
+        "tabKey": "stats_tab",
+        "title": "Stats",
+        "controlby": "public",
+        "bytypes": {
+          "public": "",
+          "gamemaster": ""
+        },
+        "condat": "",
+        "condop": "NON",
+        "condvalue": "",
+        "panels": [
+          {
+            "id": "Wc4z3QNaDFGzZUsm",
+            "name": "Main Stats",
+            "ikey": "main_stats_panel"
+          },
+          {
+            "id": "CCX1QFTdqgpOhoyl",
+            "name": "Class panel",
+            "ikey": "class_panel"
+          },
+          {
+            "id": "ODf4f41Av3TNMJ5v",
+            "name": "Combat",
+            "ikey": "combat_panel"
+          },
+          {
+            "id": "eR31rzZslbIQoNPM",
+            "name": "Level Panel",
+            "ikey": "level_panel"
+          }
+        ],
+        "attributes": {
+          "name": "Stats Tab"
+        }
+      },
+      "effects": [],
+      "folder": "YdWuY9yIm85nKpUn",
+      "sort": 0,
+      "permission": {
+        "default": 0,
+        "4w1xdHWNsRQYYZZR": 3
+      },
+      "flags": {}
+    }
+  ],
+  "folders": [
+    {
+      "_id": "LargJpbzwDZQY5S1",
+      "name": "Sandbox",
+      "type": "Item",
+      "parent": null,
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "qVYQuJe7duWg4KDQ",
+      "name": "cItems",
+      "type": "Item",
+      "parent": "LargJpbzwDZQY5S1",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "27Cbc4UaOwmxJf3B",
+      "name": "General Abilities",
+      "type": "Item",
+      "parent": "qVYQuJe7duWg4KDQ",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "TmxUE4P0aWjnCpFd",
+      "name": "Jester",
+      "type": "Item",
+      "parent": "qVYQuJe7duWg4KDQ",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "ldVpfP3cjxiqTCl2",
+      "name": "Skills",
+      "type": "Item",
+      "parent": "qVYQuJe7duWg4KDQ",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "jsc5tX5Yjzk4vdNL",
+      "name": "Groups",
+      "type": "Item",
+      "parent": "LargJpbzwDZQY5S1",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "KT9A2bpEXj9dsZmm",
+      "name": "Classes",
+      "type": "Item",
+      "parent": "jsc5tX5Yjzk4vdNL",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "FXIFY3VZSoOZ5mwA",
+      "name": "Jester",
+      "type": "Item",
+      "parent": "LargJpbzwDZQY5S1",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "NjQ0MY3tx5dHIAwK",
+      "name": "Panels And Properties",
+      "type": "Item",
+      "parent": "LargJpbzwDZQY5S1",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "90LMbsC20BnKRLJj",
+      "name": "Class",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "Nd6uuzToWWvYausu",
+      "name": "Class Abilities",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "GAFcIarA7dSsZTAS",
+      "name": "Combat",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "lpJamrpH58EMpBmY",
+      "name": "Level",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "kQTn19ErFOrk9jGA",
+      "name": "Main Stats",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "Owv033RECtq7ETan",
+      "name": "Skill",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "dYE3UZhTzddeiaIZ",
+      "name": "Skills OLD",
+      "type": "Item",
+      "parent": "NjQ0MY3tx5dHIAwK",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "YdWuY9yIm85nKpUn",
+      "name": "Tabs",
+      "type": "Item",
+      "parent": "LargJpbzwDZQY5S1",
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    },
+    {
+      "_id": "nDtCWhOr4TS6IYe7",
+      "name": "Sandbox",
+      "type": "Actor",
+      "parent": null,
+      "sorting": "a",
+      "sort": 0,
+      "color": null,
+      "flags": {}
+    }
+  ]
+}
